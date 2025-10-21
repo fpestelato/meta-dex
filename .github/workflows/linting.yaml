@@ -1,0 +1,27 @@
+name: Linting
+
+on: pull_request
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run Linters
+        run: |
+          npm run lint:prettier:check || PRETTIER_FAILED=true
+          npm run lint:eslint:check || ESLINT_FAILED=true
+
+          if [ "$PRETTIER_FAILED" = true ] || [ "$ESLINT_FAILED" = true ]; then
+            echo "Linting failed!"
+            exit 1
+          fi
