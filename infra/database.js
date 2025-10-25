@@ -1,35 +1,17 @@
-import { Client } from "pg";
+import { Pool } from "pg";
+import dotenv from "dotenv";
 
-async function query(queryObject) {
-  let client;
+const envFile = `.env.${process.env.NODE_ENV || "development"}`;
+dotenv.config({ path: envFile });
 
-  try {
-    client = await getNewClient();
-    return await client.query(queryObject);
-  } catch (error) {
-    console.error(error);
-    throw error;
-  } finally {
-    client.end();
-  }
-}
+const pool = new Pool({
+  host: process.env.POSTGRES_HOST,
+  port: process.env.POSTGRES_PORT,
+  database: process.env.POSTGRES_DB,
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  max: 20,
+  idleTimeoutMillis: 30000,
+});
 
-async function getNewClient() {
-  const client = new Client({
-    host: process.env.POSTGRES_HOST,
-    port: process.env.POSTGRES_PORT,
-    database: process.env.POSTGRES_DB,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-  });
-
-  await client.connect();
-  return client;
-}
-
-const database = {
-  getNewClient,
-  query,
-};
-
-export default database;
+export default pool;

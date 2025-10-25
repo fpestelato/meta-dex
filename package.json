@@ -16,7 +16,9 @@
     "test:watch": "jest --watchAll --runInBand",
     "lint:eslint:check": "next lint --dir .",
     "lint:prettier:check": "prettier --check .",
-    "lint:prettier:fix": "prettier --write ."
+    "lint:prettier:fix": "prettier --write .",
+    "wait-for-postgres": "node infra/scripts/wait-for-postgres.js",
+    "ingest-base": "npm run services:up && npm run wait-for-postgres && npm run migration:up && node infra/scripts/ingestBase.js"
   },
   "dependencies": {
     "csv-parser": "^3.2.0",
