@@ -1,16 +1,89 @@
-function correctMegaNames(name) {
+export function normalizeNames(name) {
   if (typeof name !== "string") return null;
 
-  if (name.includes("Mega ")) {
-    const parts = name.split(" ");
-    if (parts.length > 2 && parts[1] === "Mega") {
-      return `${parts[1]} ${parts[0]}`;
+  const specificMappings = {
+    Meloetta: "meloetta-aria",
+    Zygarde: "zygarde-50",
+    "Zacian Crowned Sword": "zacian-crowned",
+    "Zamazenta Crowned Shield": "zamazenta-crowned",
+    Lycanroc: "lycanroc-midday",
+    Wishiwashi: "wishiwashi-solo",
+    "Minior Meteor": "minior-red-meteor",
+    "Minior Core": "minior-red",
+    Darmanitan: "darmanitan-standard",
+    "Darmanitan Zen-Mode": "darmanitan-zen",
+    "Galarian Darmanitan": "darmanitan-galar-standard",
+    "Galarian Darmanitan Zen-Mode": "darmanitan-galar-zen",
+  };
+
+  if (specificMappings[name]) {
+    return specificMappings[name];
+  }
+
+  let normalizedName = name
+    .toLowerCase()
+    .replace(".", "")
+    .replace("size", "")
+    .replace("style", "")
+    .replace("cloak", "")
+    .replace("form", "")
+    .replace("mane", "")
+    .replace("wings", "")
+    .replace("rider", "")
+    .replace("♀", "-f")
+    .replace("♂", "-m")
+    .replace(":", "")
+    .replace("%", "")
+    .replace("'", "")
+    .trim()
+    .replaceAll(" ", "-")
+    .replaceAll("--", "-");
+
+  if (normalizedName.includes("galarian")) {
+    normalizedName = normalizedName.replace("galarian-", "") + "-galar";
+  }
+
+  if (normalizedName.includes("alolan")) {
+    normalizedName = normalizedName.replace("alolan-", "") + "-alola";
+  }
+
+  if (normalizedName.includes("mega")) {
+    normalizedName = normalizedName.replace("mega-", "") + "-mega";
+
+    if (normalizedName.includes("-y-mega"))
+      normalizedName = normalizedName.replace("-y-mega", "") + "-mega-y";
+
+    if (normalizedName.includes("-x-mega"))
+      normalizedName = normalizedName.replace("-x-mega", "") + "-mega-x";
+  }
+
+  const prefixes = [
+    "small-",
+    "average-",
+    "large-",
+    "super-",
+    "black-",
+    "white-",
+    "primal-",
+    "ultra-",
+    "dawn-",
+    "dusk-",
+    "ash-",
+    "unbound-",
+  ];
+
+  for (const prefix of prefixes) {
+    if (normalizedName.startsWith(prefix)) {
+      const baseName = normalizedName.replace(prefix, "");
+      normalizedName = `${baseName}-${prefix.slice(0, -1)}`;
+      break;
     }
   }
-  return name.trim();
+
+  return normalizedName;
 }
 
-function parseAbilities(abilitiesString) {
+export function parseAbilities(abilitiesString) {
   if (
     !abilitiesString ||
     typeof abilitiesString !== "string" ||
@@ -34,7 +107,7 @@ function parseAbilities(abilitiesString) {
 
 export function formatPokemon(pokemonRow) {
   return {
-    name: correctMegaNames(pokemonRow.name),
+    name: normalizeNames(pokemonRow.name),
     pokedex_number: pokemonRow.number,
     type_1: pokemonRow.type_1,
     type_2: pokemonRow.type_2 || null,
