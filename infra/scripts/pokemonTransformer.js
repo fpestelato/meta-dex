@@ -34,8 +34,8 @@ function parseAbilities(abilitiesString) {
 
 export function formatPokemon(pokemonRow) {
   return {
-    number: pokemonRow.number,
     name: correctMegaNames(pokemonRow.name),
+    pokedex_number: pokemonRow.number,
     type_1: pokemonRow.type_1,
     type_2: pokemonRow.type_2 || null,
     abilities: parseAbilities(pokemonRow.abilities),
@@ -63,6 +63,5 @@ export function formatPokemon(pokemonRow) {
     against_dark: parseFloat(pokemonRow.against_dark),
     against_steel: parseFloat(pokemonRow.against_steel),
     against_fairy: parseFloat(pokemonRow.against_fairy),
-    image_url: null,
   };
 }
