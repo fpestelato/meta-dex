@@ -18,12 +18,15 @@
     "lint:prettier:check": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
     "wait-for-postgres": "node infra/scripts/wait-for-postgres.js",
-    "ingest-base": "npm run services:up && npm run wait-for-postgres && npm run migration:up && node infra/scripts/ingestBase.js"
+    "ingest-base": "npm run services:up && npm run wait-for-postgres && npm run migration:up && node infra/scripts/ingestBase.js",
+    "commit": "cz"
   },
   "dependencies": {
+    "bullmq": "^5.61.2",
     "csv-parser": "^3.2.0",
     "dotenv": "^17.2.3",
     "dotenv-expand": "^12.0.3",
+    "ioredis": "^5.8.2",
     "next": "15.5.6",
     "node-pg-migrate": "^8.0.3",
     "pg": "^8.16.3",
@@ -33,7 +36,9 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "commitizen": "^4.3.1",
     "concurrently": "^9.2.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.6",
     "eslint-config-prettier": "^10.1.8",
@@ -41,5 +46,10 @@
     "jest": "^30.2.0",
     "prettier": "^3.6.2",
     "tailwindcss": "^4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

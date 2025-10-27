@@ -12,6 +12,7 @@ import {
   insertPokemonQuery,
   insertPokemonTypeQuery,
 } from "../queries/index.js";
+import enrichmentQueue from "../../queue/enrichment.queue.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -103,6 +104,12 @@ async function* transformAndLoad(source) {
         pokemonId,
         type2Id,
       );
+
+      await enrichmentQueue.add("enrich-pokemon", {
+        pokemonId,
+        pokedexNumber: pokemon.pokedex_number,
+        name: pokemon.name,
+      });
 
       await client.query("COMMIT");
     } catch (err) {
