@@ -2,7 +2,7 @@ import { describe, it, expect } from "@jest/globals";
 import {
   formatPokemon,
   normalizeNames,
-} from "@/infra/scripts/pokemonTransformer.js";
+} from "@/infra/scripts/ingest-base/pokemon.transformer.js";
 
 describe("parseAbilities", () => {
   it("should set type_2 to null when empty and parse abilities for Squirtle", () => {
