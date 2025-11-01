@@ -18,7 +18,7 @@
     "lint:prettier:check": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
     "wait-for-postgres": "node infra/scripts/wait-for-postgres.js",
-    "ingest-base": "npm run services:up && npm run wait-for-postgres && npm run migration:up && node infra/scripts/ingestBase.js",
+    "ingest-base": "npm run services:up && npm run wait-for-postgres && npm run migration:up && node infra/scripts/ingest-base/ingestBase.js && npm run services:down",
     "commit": "cz"
   },
   "dependencies": {

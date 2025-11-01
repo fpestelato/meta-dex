@@ -105,12 +105,16 @@ export function parseAbilities(abilitiesString) {
   }
 }
 
+function toLowerCaseOrNull(value) {
+  return value ? value.toLowerCase() : null;
+}
+
 export function formatPokemon(pokemonRow) {
   return {
     name: normalizeNames(pokemonRow.name),
     pokedex_number: pokemonRow.number,
-    type_1: pokemonRow.type_1,
-    type_2: pokemonRow.type_2 || null,
+    type_1: toLowerCaseOrNull(pokemonRow.type_1),
+    type_2: toLowerCaseOrNull(pokemonRow.type_2),
     abilities: parseAbilities(pokemonRow.abilities),
     hp: parseFloat(pokemonRow.hp),
     att: parseFloat(pokemonRow.att),

@@ -5,4 +5,12 @@ const enrichmentQueue = new Queue(ENRICHMENT_QUEUE, {
   connection: connectionOpts,
 });
 
-export default enrichmentQueue;
+function addPokemonEnrichmentJob(pokemon) {
+  enrichmentQueue.add("enrich-pokemon", {
+    pokemonId: pokemon.id,
+    name: pokemon.name,
+    pokedexNumber: pokemon.pokedex_number,
+  });
+}
+
+export { addPokemonEnrichmentJob };
